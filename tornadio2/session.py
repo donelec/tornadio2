@@ -104,6 +104,9 @@ class Session(sessioncontainer.SessionBase):
                               request.arguments,
                               request.cookies)
 
+        # Save request for the future
+        self.request = request
+
         # If everything is fine - continue
         self.send_message(proto.connect())
 
