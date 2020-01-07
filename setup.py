@@ -19,7 +19,7 @@ except:
 
 setup(
     name='TornadIO2',
-    version='0.0.3',
+    version='0.0.4.1',
     author='Serge S. Koval',
     author_email='serge.koval@gmail.com',
     packages=['tornadio2'],
@@ -31,6 +31,6 @@ setup(
     requires=['simplejson', 'tornado'],
     install_requires=[
         'simplejson >= 2.1.0',
-        'tornado >= 2.2.0'
-    ]
+        'tornado >= 3',
+    ],
 )

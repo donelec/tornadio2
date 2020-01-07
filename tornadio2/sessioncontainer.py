@@ -22,6 +22,8 @@
     support.
 """
 
+from __future__ import unicode_literals
+
 from heapq import heappush, heappop
 from time import time
 from hashlib import md5
@@ -31,8 +33,8 @@ from random import random
 def _random_key():
     """Return random session key"""
     i = md5()
-    i.update('%s%s' % (random(), time()))
-    return i.hexdigest()
+    i.update('{0}{1}'.format(random(), time()).encode('utf-8'))
+    return i.hexdigest().encode('utf-8')
 
 
 class SessionBase(object):
@@ -73,6 +75,9 @@ class SessionBase(object):
 
     def __cmp__(self, other):
         return cmp(self.expiry_date, other.expiry_date)
+
+    def __lt__(self, other):
+        return self.expiry_date < other.expiry_date
 
     def __repr__(self):
         return '%f %s %d' % (getattr(self, 'expiry_date', -1),

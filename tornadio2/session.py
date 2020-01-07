@@ -21,7 +21,7 @@
     Active TornadIO2 connection session.
 """
 
-import urlparse
+import urllib.parse
 import logging
 
 
@@ -107,9 +107,6 @@ class Session(sessioncontainer.SessionBase):
                               request.arguments,
                               request.cookies)
 
-        # Save request for the future
-        self.request = request
-
         # If everything is fine - continue
         self.send_message(proto.connect())
 
@@ -121,7 +118,7 @@ class Session(sessioncontainer.SessionBase):
         # Endpoints
         self.endpoints = dict()
 
-        result = self.conn.on_open(self.info)
+        result = self.conn.open(self.info)
         if result is not None and not result:
             raise HTTPError(401)
 
@@ -224,7 +221,7 @@ class Session(sessioncontainer.SessionBase):
         if endpoint is None:
             if not self.conn.is_closed:
                 # Close child connections
-                for k in self.endpoints.keys():
+                for k in list(self.endpoints.keys()):
                     self.disconnect_endpoint(k)
 
                 # Close parent connections
@@ -292,7 +289,7 @@ class Session(sessioncontainer.SessionBase):
         `url`
             socket.io endpoint URL.
         """
-        urldata = urlparse.urlparse(url)
+        urldata = urllib.parse.urlparse(url)
 
         endpoint = urldata.path
 
@@ -308,7 +305,7 @@ class Session(sessioncontainer.SessionBase):
 
         self.send_message(proto.connect(endpoint))
 
-        if conn.on_open(self.info) == False:
+        if conn.open(self.info) == False:
             self.disconnect_endpoint(endpoint)
 
     def disconnect_endpoint(self, endpoint):
@@ -407,7 +404,7 @@ class Session(sessioncontainer.SessionBase):
                 # in args
                 if len(args) == 1 and isinstance(args[0], dict):
                     # Fix for the http://bugs.python.org/issue4978 for older Python versions
-                    str_args = dict((str(x), y) for x, y in args[0].iteritems())
+                    str_args = dict((str(x), y) for x, y in args[0].items())
 
                     ack_response = conn.on_event(event['name'], kwargs=str_args)
                 else:
@@ -432,7 +429,7 @@ class Session(sessioncontainer.SessionBase):
                 logger.error('Incoming error: %s' % msg_data)
             elif msg_type == proto.NOOP:
                 pass
-        except Exception, ex:
+        except Exception as ex:
             logger.exception(ex)
 
             # TODO: Add global exception callback?
