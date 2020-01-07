@@ -20,6 +20,7 @@
 
     Persistent transport implementations.
 """
+from __future__ import absolute_import
 import logging
 import time
 import traceback

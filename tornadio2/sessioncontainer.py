@@ -24,6 +24,7 @@
 
 from __future__ import unicode_literals
 
+from __future__ import absolute_import
 from heapq import heappush, heappop
 from time import time
 from hashlib import md5

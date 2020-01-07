@@ -20,6 +20,7 @@
     Generator-based interface to make it easier to work in an asynchronous environment.
 """
 
+from __future__ import absolute_import
 import functools
 import types
 

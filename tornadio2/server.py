@@ -22,6 +22,7 @@
     protocol is enabled). Shamesly borrowed from the SocketTornad.IO project.
 """
 
+from __future__ import absolute_import
 import logging
 
 from tornado import ioloop

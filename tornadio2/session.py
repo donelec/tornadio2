@@ -21,6 +21,7 @@
     Active TornadIO2 connection session.
 """
 
+from __future__ import absolute_import
 import urllib.parse
 import logging
 
