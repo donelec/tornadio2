@@ -43,7 +43,7 @@ class SyncRunner(Runner):
         """
         self._callback = callback
 
-        super(SyncRunner, self).__init__(gen)
+        super(SyncRunner, self).__init__(gen, self._callback)
 
     def run(self):
         """Overloaded run function"""
@@ -88,7 +88,7 @@ def sync_engine(func):
                 return gen
 
         # Completion callback
-        def finished(value):
+        def finished(*args, **kwargs):
             data.runner = None
 
             try:
