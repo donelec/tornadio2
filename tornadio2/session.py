@@ -123,6 +123,14 @@ class Session(sessioncontainer.SessionBase):
         if result is not None and not result:
             raise HTTPError(401)
 
+    def __lt__(self, other):
+        if self.expiry_date and other.expiry_date:
+            return self.expiry_date < other.expiry_date
+        elif self.expiry_date:
+            return False
+        else:
+            return True
+
     # Session callbacks
     def on_delete(self, forced):
         """Session expiration callback
