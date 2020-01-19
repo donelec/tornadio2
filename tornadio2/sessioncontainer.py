@@ -25,6 +25,8 @@
 from __future__ import unicode_literals
 
 from __future__ import absolute_import
+
+from functools import total_ordering
 from heapq import heappush, heappop
 from time import time
 from hashlib import md5
@@ -38,6 +40,7 @@ def _random_key():
     return i.hexdigest().encode('utf-8')
 
 
+@total_ordering
 class SessionBase(object):
     """Represents one session object stored in the session container.
     Derive from this object to store additional data.
@@ -74,8 +77,11 @@ class SessionBase(object):
         """Triggered when object was expired or deleted."""
         pass
 
-    def __cmp__(self, other):
-        return cmp(self.expiry_date, other.expiry_date)
+    def __eq__(self, other):
+        return self.expiry_date == other.expiry_date
+
+    def __ne__(self, other):
+        return not (self == other)
 
     def __lt__(self, other):
         return self.expiry_date < other.expiry_date
